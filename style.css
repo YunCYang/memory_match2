@@ -1,34 +1,16 @@
 /* testing area start */
-header {
-  background-color: chartreuse;
-  opacity: 0.4;
-}
-main {
-  background-color: hotpink;
-  opacity: 0.4;
-}
-aside {
-  background-color: rebeccapurple;
-  opacity: 0.4;
-}
-#main_content {
-  background-color: darksalmon;
-  opacity: 0.4;
-}
 .card_container {
   border: solid black 1px;
   opacity: 0.4;
 }
-#icon_contaner {
-  background-color: firebrick;
-  opacity: 0.4;
+#user_container {
+  background-color: chartreuse;
 }
-#title_container {
-  background-color: royalblue;
-  opacity: 0.4;
+#enemy_container {
+  background-color: hotpink;
 }
-.test_only {
-  font-size: 4em;
+.display_container {
+  background-color: rebeccapurple;
 }
 /* testing area end */
 @font-face {
@@ -40,8 +22,9 @@ body * {
   display: flex;
   box-sizing: border-box;
   font-family: pokemon_font;
+  color: darkgreen;
 }
-body, header, main {
+body, main {
   width: 100%;
 }
 body {
@@ -52,39 +35,68 @@ body {
   background-size: auto 100%;
 }
 header {
-  height: 15vh;
+  height: 13vh;
+  margin: 1vh auto;
+  width: 98%;
+}
+header, aside, #main_content {
+  border: darkgreen solid 2px;
+  border-radius: 5px;
+  box-shadow: 0 0 5px darkgreen;
 }
 #menu_container {
   width: 16%;
 }
-#menu_image {
-  height: 100%;
-  max-width: calc(height*100%);
+#menu_image, #settings_image {
+  height: 90%;
+  max-width: calc(height*90%);
   margin: auto;
   cursor: pointer;
-  opacity: 0.6;
+  opacity: 0.7;
   position: relative;
 }
-#menu_image:hover {
+#menu_image:hover, #settings_image:hover {
   opacity: 1;
 }
-#menu_image:active {
+#menu_image:active, #settings_image:active {
   opacity: 0.4;
   top: 2%;
 }
 #title_container {
   width: 64%;
+  text-shadow: gray 1px 1px;
+}
+#title_text {
+  margin: auto;
+  font-size: 4em;
+}
+#settings_container {
+  width: 20%;
 }
 main {
   height: 85vh;
   flex-direction: row-reverse;
 }
 aside {
-  width: 20%;
+  width: 18%;
+  height: 95%;
+  margin: 1%;
+}
+aside, #main_content {
+  flex-wrap: wrap;
+}
+#user_container, #enemy_container {
+  height: 36%;
+  width: 100%;
+}
+.display_container {
+  height: 28%;
+  width: 100%;
 }
 #main_content {
-  width: 80%;
-  flex-wrap: wrap;
+  width: 78%;
+  height: 95%;
+  margin: 1%;
 }
 .card_container {
   width: 20%;
@@ -102,16 +114,37 @@ aside {
     flex-direction: column;
   }
   aside, #main_content {
-    width: 100%;
+    width: 98%;
   }
   aside {
-    height: 20%;
+    height: 18%;
+  }
+  #user_container, #enemy_container, .display_container {
+    height: 100%;
+  }
+  #user_container, #enemy_container {
+  width: 36%;
+  }
+  .display_container {
+    width: 28%;
   }
   #main_content {
-    height: 80%;
+    height: 78%;
   }
   .card_container {
     width: calc(100%/3);
     height: 20%;
+  }
+}
+
+@media screen and (max-width: 1400px) {
+  #title_text {
+    font-size: 3.5em;
+  }
+}
+
+@media screen and (max-width: 1250px) {
+  #title_text {
+    font-size: 3em;
   }
 }
