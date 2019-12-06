@@ -1,0 +1,117 @@
+/* testing area start */
+header {
+  background-color: chartreuse;
+  opacity: 0.4;
+}
+main {
+  background-color: hotpink;
+  opacity: 0.4;
+}
+aside {
+  background-color: rebeccapurple;
+  opacity: 0.4;
+}
+#main_content {
+  background-color: darksalmon;
+  opacity: 0.4;
+}
+.card_container {
+  border: solid black 1px;
+  opacity: 0.4;
+}
+#icon_contaner {
+  background-color: firebrick;
+  opacity: 0.4;
+}
+#title_container {
+  background-color: royalblue;
+  opacity: 0.4;
+}
+.test_only {
+  font-size: 4em;
+}
+/* testing area end */
+@font-face {
+  font-family: pokemon_font;
+  src: url(./media/font/shield2.otf);
+}
+
+body * {
+  display: flex;
+  box-sizing: border-box;
+  font-family: pokemon_font;
+}
+body, header, main {
+  width: 100%;
+}
+body {
+  flex-direction: column;
+  margin: 0;
+  background-image: url(./media/images/background/background1.jpg);
+  background-repeat: repeat-x;
+  background-size: auto 100%;
+}
+header {
+  height: 15vh;
+}
+#menu_container {
+  width: 16%;
+}
+#menu_image {
+  height: 100%;
+  max-width: calc(height*100%);
+  margin: auto;
+  cursor: pointer;
+  opacity: 0.6;
+  position: relative;
+}
+#menu_image:hover {
+  opacity: 1;
+}
+#menu_image:active {
+  opacity: 0.4;
+  top: 2%;
+}
+#title_container {
+  width: 64%;
+}
+main {
+  height: 85vh;
+  flex-direction: row-reverse;
+}
+aside {
+  width: 20%;
+}
+#main_content {
+  width: 80%;
+  flex-wrap: wrap;
+}
+.card_container {
+  width: 20%;
+  height: calc(100%/3);
+}
+
+@media screen and (max-width: 1050px) {
+  header {
+    display: none;
+  }
+  main {
+    height: 100vh;
+  }
+  main {
+    flex-direction: column;
+  }
+  aside, #main_content {
+    width: 100%;
+  }
+  aside {
+    height: 20%;
+  }
+  #main_content {
+    height: 80%;
+  }
+  .card_container {
+    width: calc(100%/3);
+    height: 20%;
+  }
+}
