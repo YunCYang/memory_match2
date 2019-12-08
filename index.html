@@ -8,29 +8,31 @@
   <link rel="stylesheet" href="style.css">
   <script src="https://code.jquery.com/jquery-3.4.1.min.js"
     integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
-  <script src="./script/main.js"></script>
   <script src="./script/gameboard.js"></script>
   <script src="./script/game.js"></script>
+  <script src="./script/main.js"></script>
 </head>
 <body>
   <header>
-    <div id="menu_container">
-      <img id="menu_image" src="./media/images/icon/title.png" alt="pokemon gun icon">
+    <div class="menu_container">
+      <img class="menu_image button" src="./media/images/icon/title.png" alt="menu button">
     </div>
-    <div id="title_container">
-      <span id="title_text">Pokemon Gun - Memory Battle</span>
+    <div class="title_container">
+      <span class="title_text">Pokemon Gun - Memory Battle</span>
     </div>
-    <div id="settings_container">
-      <img id="settings_image" src="./media/images/icon/settings.png" alt="settings icon">
+    <div class="settings_container">
+      <img class="settings_image button" src="./media/images/icon/settings.png" alt="settings button">
     </div>
   </header>
   <main>
     <aside>
-      <div id="user_container"></div>
+      <div class="user_container"></div>
       <div class="display_container"></div>
-      <div id="enemy_container"></div>
+      <div class="enemy_container"></div>
+      <img id="menu_image_mobile" class="menu_image button" src="./media/images/icon/title.png" alt="menu button">
+      <img id="settings_image_mobile" class="settings_image button" src="./media/images/icon/settings.png" alt="settings button">
     </aside>
-    <div id="main_content">
+    <div class="main_content">
       <div class="card_container"></div>
       <div class="card_container"></div>
       <div class="card_container"></div>
@@ -46,6 +48,11 @@
       <div class="card_container"></div>
       <div class="card_container"></div>
       <div class="card_container"></div>
+    </div>
+    <div class="modal_container">
+      <div class="settings_modal modal"></div>
+      <div class="selection_modal modal"></div>
+      <div class="stat_modal modal"></div>
     </div>
   </main>
 </body>
