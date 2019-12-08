@@ -100,7 +100,8 @@ aside {
   height: 95%;
   margin: 1%;
 }
-aside, .main_content, .selection_modal_content, .selection_section {
+aside, .main_content, .selection_modal_content, .selection_section,
+.selected_team_container, .team_main_container {
   flex-wrap: wrap;
 }
 .user_container, .enemy_container {
@@ -140,6 +141,7 @@ aside, .main_content, .selection_modal_content, .selection_section {
 }
 .selection_modal_content {
   flex-direction: column;
+  width: 100%;
 }
 .modal_header {
   height: 5%;
@@ -153,20 +155,37 @@ aside, .main_content, .selection_modal_content, .selection_section {
 .sub_selection_head {
   width: 50%;
 }
-.sub_selection_head p {
+.sub_selection_head p, .difficulty_head p {
   padding: 5%;
   border-bottom: solid darkgreen 1px;
   font-size: 2.5em;
 }
-.sub_selection_head p, .selection_button_container > div > button {
+.difficulty_head p {
+  padding: 0;
+  margin: 0;
+}
+.sub_selection_head p, .selection_button_container > div > button,
+.difficulty_head, .selection_button_container button {
   margin: auto;
+}
+.difficulty_section .selection_button_container {
+  align-self: center;
 }
 .selection_section {
   height: calc(64%/3);
 }
+.difficulty_section {
+  height: calc(70%/4);
+}
 .selection_button_container {
   width: 100%;
   height: 50%;
+}
+.difficulty_section .selection_button_container {
+  height: 80%;
+}
+.difficulty_section .selection_button_container button {
+  font-size: 2.5em;
 }
 .selection_button_container > div > button, .selection_hint_container {
   font-size: 1.5em;
@@ -185,7 +204,7 @@ aside, .main_content, .selection_modal_content, .selection_section {
 .selection_button_container > * {
   width: 50%;
 }
-.game_mode_button_container > button, .team_size_button_container > button {
+.selection_button_container button {
   height: 80%;
   border-radius: 5px;
 }
@@ -195,12 +214,52 @@ aside, .main_content, .selection_modal_content, .selection_section {
 .team_size_button_container > button {
   width: 25%;
 }
+.selected_team_container {
+  height: 20%;
+}
+.selected_team_slot {
+  height: 50%;
+  width: calc(100%/3);
+  padding: 1%;
+  background-color: gray;
+  border: solid darkgray 1px;
+}
+.team_main_container {
+  height: 60%;
+}
+.type_slot {
+  height: calc(100%/6);
+  width: calc(100%/3);
+  padding: 1%;
+}
+.type_button {
+  width: 95%;
+}
+.confirm_button_container {
+  height: 10%;
+}
+.confirm_button_container > button {
+  width: auto;
+  font-size: 2em;
+  color: lightgray;
+  border-style: solid;
+  cursor: default;
+}
+.active {
+  color: firebrick;
+  border-style: outset;
+  cursor: pointer;
+}
 .close {
   font-size: 2em;
   font-weight: bold;
 }
 .close:hover, .close:focus {
   color: black;
+}
+.return {
+  height: 95%;
+  width: calc(height*100%);
 }
 .pop_right {
   transform: translateX(-33vh);
@@ -215,6 +274,9 @@ aside, .main_content, .selection_modal_content, .selection_section {
   background-color: darkgreen;
   color: ghostwhite;
   border-style: solid;
+}
+.overflow {
+  overflow-y: scroll;
 }
 
 @media screen and (max-width: 1050px) {
@@ -258,7 +320,7 @@ aside, .main_content, .selection_modal_content, .selection_section {
   .title_text {
     font-size: 3.5em;
   }
-  .sub_selection_head p {
+  .sub_selection_head p, .difficulty_head p {
     font-size: 2em;
   }
 }
@@ -271,8 +333,23 @@ aside, .main_content, .selection_modal_content, .selection_section {
     font-size: 2.5em;
     margin-left: 15%;
   }
+  .difficulty_head p {
+    font-size: 2.5em;
+  }
   .selection_button_container > div > button, .selection_hint_container {
   font-size: 1.2em;
+  }
+  .difficulty_section .selection_button_container button {
+  font-size: 2em;
+  }
+}
+
+@media screen and (max-width: 900px) {
+  .difficulty_section .selection_button_container button {
+    font-size: 1.5em;
+  }
+  .selection_modal {
+    width: 66vw;
   }
 }
 
@@ -282,9 +359,21 @@ aside, .main_content, .selection_modal_content, .selection_section {
   }
 }
 
+@media screen and (max-width: 700px) {
+  .sub_selection_head p, .difficulty_head p {
+    font-size: 1.5em;
+  }
+  .difficulty_section .selection_button_container button {
+    font-size: 1em;
+  }
+}
+
 @media screen and (max-height: 700px) {
-  .sub_selection_head p {
+  .sub_selection_head p, .difficulty_head p {
     font-size: 2em;
+  }
+
+  .sub_selection_head p {
     margin-left: 15%;
   }
 
