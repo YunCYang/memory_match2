@@ -3,10 +3,10 @@
   border: solid black 1px;
   opacity: 0.4;
 }
-#user_container {
+.user_container {
   background-color: chartreuse;
 }
-#enemy_container {
+.enemy_container {
   background-color: hotpink;
 }
 .display_container {
@@ -33,21 +33,22 @@ body {
   background-image: url(./media/images/background/background1.jpg);
   background-repeat: repeat-x;
   background-size: auto 100%;
+  overflow: hidden;
 }
 header {
   height: 13vh;
   margin: 1vh auto;
   width: 98%;
 }
-header, aside, #main_content {
+header, aside, .main_content {
   border: darkgreen solid 2px;
   border-radius: 5px;
   box-shadow: 0 0 5px darkgreen;
 }
-#menu_container {
+.menu_container {
   width: 16%;
 }
-#menu_image, #settings_image {
+.menu_image, .settings_image {
   height: 90%;
   max-width: calc(height*90%);
   margin: auto;
@@ -55,22 +56,39 @@ header, aside, #main_content {
   opacity: 0.7;
   position: relative;
 }
-#menu_image:hover, #settings_image:hover {
+#settings_image_mobile, #menu_image_mobile {
+    position: absolute;
+    top: 2%;
+    opacity: 0.3;
+    height: 10vh;
+    width: 10vh;
+    display: none;
+}
+#settings_image_mobile {
+  right: 2%;
+}
+#menu_image_mobile {
+  left: 2%;
+}
+.button, .close {
+  cursor: pointer;
+}
+.button:hover, #settings_image_mobile:hover, #menu_image_mobile:hover {
   opacity: 1;
 }
-#menu_image:active, #settings_image:active {
+.button:active, #settings_image_mobile:active, #menu_image_mobile:active {
   opacity: 0.4;
-  top: 2%;
+  top: 2.5%;
 }
-#title_container {
+.title_container {
   width: 64%;
   text-shadow: gray 1px 1px;
 }
-#title_text {
+.title_text {
   margin: auto;
   font-size: 4em;
 }
-#settings_container {
+.settings_container {
   width: 20%;
 }
 main {
@@ -82,10 +100,10 @@ aside {
   height: 95%;
   margin: 1%;
 }
-aside, #main_content {
+aside, .main_content, .selection_modal_content, .selection_section {
   flex-wrap: wrap;
 }
-#user_container, #enemy_container {
+.user_container, .enemy_container {
   height: 36%;
   width: 100%;
 }
@@ -93,7 +111,7 @@ aside, #main_content {
   height: 28%;
   width: 100%;
 }
-#main_content {
+.main_content {
   width: 78%;
   height: 95%;
   margin: 1%;
@@ -101,6 +119,102 @@ aside, #main_content {
 .card_container {
   width: 20%;
   height: calc(100%/3);
+}
+.modal {
+  position: absolute;
+  background-color: beige;
+  border-radius: 10px;
+}
+.settings_modal {
+  top: 2vh;
+  right: -30vh;
+  transition: transform 1s;
+}
+.selection_modal {
+  top: 2vh;
+  left: -240vh;
+  transition: transform 1s;
+  width: 33vw;
+  height: 95vh;
+  padding: 1%;
+}
+.selection_modal_content {
+  flex-direction: column;
+}
+.modal_header {
+  height: 5%;
+}
+.modal_footer {
+  height: 5%;
+}
+.selection_head {
+  height: 15%;
+}
+.sub_selection_head {
+  width: 50%;
+}
+.sub_selection_head p {
+  padding: 5%;
+  border-bottom: solid darkgreen 1px;
+  font-size: 2.5em;
+}
+.sub_selection_head p, .selection_button_container > div > button {
+  margin: auto;
+}
+.selection_section {
+  height: calc(64%/3);
+}
+.selection_button_container {
+  width: 100%;
+  height: 50%;
+}
+.selection_button_container > div > button, .selection_hint_container {
+  font-size: 1.5em;
+}
+.selection_hint_container {
+  width: 100%;
+  height: 50%;
+  border: solid darkgreen 1px;
+  border-radius: 5px;
+  background-color: rgb(221, 221, 182);
+}
+.selection_section, .selection_hint_container {
+  padding: 3%;
+  margin: 2%;
+}
+.selection_button_container > * {
+  width: 50%;
+}
+.game_mode_button_container > button, .team_size_button_container > button {
+  height: 80%;
+  border-radius: 5px;
+}
+.game_mode_button_container > button {
+  width: 75%;
+}
+.team_size_button_container > button {
+  width: 25%;
+}
+.close {
+  font-size: 2em;
+  font-weight: bold;
+}
+.close:hover, .close:focus {
+  color: black;
+}
+.pop_right {
+  transform: translateX(-33vh);
+}
+.pop_left {
+  transform: translateX(242vh);
+}
+.hide {
+  display: none;
+}
+.choice {
+  background-color: darkgreen;
+  color: ghostwhite;
+  border-style: solid;
 }
 
 @media screen and (max-width: 1050px) {
@@ -113,38 +227,68 @@ aside, #main_content {
   main {
     flex-direction: column;
   }
-  aside, #main_content {
+  aside, .main_content {
     width: 98%;
   }
   aside {
     height: 18%;
   }
-  #user_container, #enemy_container, .display_container {
+  .user_container, .enemy_container, .display_container {
     height: 100%;
   }
-  #user_container, #enemy_container {
+  .user_container, .enemy_container {
   width: 36%;
   }
   .display_container {
     width: 28%;
   }
-  #main_content {
+  .main_content {
     height: 78%;
   }
   .card_container {
     width: calc(100%/3);
     height: 20%;
   }
-}
-
-@media screen and (max-width: 1400px) {
-  #title_text {
-    font-size: 3.5em;
+  #settings_image_mobile, #menu_image_mobile {
+    display: block;
   }
 }
 
-@media screen and (max-width: 1250px) {
-  #title_text {
+@media screen and (max-width: 1400px) {
+  .title_text {
+    font-size: 3.5em;
+  }
+  .sub_selection_head p {
+    font-size: 2em;
+  }
+}
+
+@media screen and (max-width: 1250px), (max-height: 800px) {
+  .title_text {
     font-size: 3em;
+  }
+  .sub_selection_head p {
+    font-size: 2.5em;
+    margin-left: 15%;
+  }
+  .selection_button_container > div > button, .selection_hint_container {
+  font-size: 1.2em;
+  }
+}
+
+@media screen and (max-width: 800px) {
+  .selection_button_container > div > button, .selection_hint_container {
+    font-size: 1em;
+  }
+}
+
+@media screen and (max-height: 700px) {
+  .sub_selection_head p {
+    font-size: 2em;
+    margin-left: 15%;
+  }
+
+  .selection_button_container > div > button, .selection_hint_container {
+    font-size: 1em;
   }
 }
