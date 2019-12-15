@@ -18,17 +18,30 @@ class GameBoard {
     }
     this.gameMode = ["random", "draft", "custom"];
     this.gameModeHint = ["Use a random Pokemon team for a battle!", "Draft team from groups of random Pokemon!", "Pick your own team and battle!"];
+    this.difficulty = ["easy", "normal", "hard", "inferno"];
+    this.type = ["normal", "fighting", "flying", "poison", "ground", "rock", "bug", "ghost", "steel",
+      "fire", "water", "grass", "electric", "psychic", "ice", "dragon", "dark", "fairy"];
+    this.data = { normal: [], fighting: [], flying: [], poison: [], ground: [], rock: [], bug: [], ghost: [], steel: [],
+      fire: [], water: [], grass: [], electric: [], psychic: [], ice: [], dragon: [], dark: [], fairy: [] };
     this.selectedGameMode = null;
     this.selectedTeamSize = null;
+    this.selectedType = null;
+    this.selectedDifficulty = null;
 
-    this.handleMenu = this.handleMenu.bind(this);
-    this.handleSettings = this.handleSettings.bind(this);
-    this.closeSelectionModal = this.closeSelectionModal.bind(this);
-    this.gameModeSelection = this.gameModeSelection.bind(this);
-    this.teamSizeSelection = this.teamSizeSelection.bind(this);
+    // this.handleMenu = this.handleMenu.bind(this);
+    // this.handleSettings = this.handleSettings.bind(this);
+    // this.closeSelectionModal = this.closeSelectionModal.bind(this);
+    // this.handleGameModeReturn = this.handleGameModeReturn.bind(this);
+    // this.handleDifficultyReturn = this.handleDifficultyReturn.bind(this);
+    // this.gameModeSelection = this.gameModeSelection.bind(this);
+    // this.teamSizeSelection = this.teamSizeSelection.bind(this);
+    // this.difficultySelection = this.difficultySelection.bind(this);
+    // this.createTypeSection = this.createTypeSection.bind(this);
+    // this.requestPokemon = this.requestPokemon.bind(this);
+    // this.processGetPokemonData = this.processGetPokemonData.bind(this);
   }
 
-  addEventHandlers(element, elementEvent) {
+  addEventHandlers = (element, elementEvent) => {
     if (element && elementEvent) {
       element.click(elementEvent);
       return true;
@@ -38,7 +51,7 @@ class GameBoard {
     this.boardElement.settingsButton.click(this.handleSettings);
   }
 
-  handleMenu() {
+  handleMenu = () => {
     const closeIcon = $('<div>', {
       class: 'modal_header'
     }).append($('<span>', {
@@ -51,7 +64,7 @@ class GameBoard {
     this.createGameModeMenu();
   }
 
-  handleSettings() {
+  handleSettings = () => {
     this.boardElement.resetButton = $('<img>', {
       class: 'resetButton button settings_button',
       src: '././media/images/icon/reset.png',
@@ -90,16 +103,13 @@ class GameBoard {
   }
   //close modal when click outside
 
-  createGameModeMenu() {
+  createGameModeMenu = () => {
     const selectionHead = $('<div>', {
       class: 'selection_head'
     }).append($('<div>', { class: 'game_mode_head sub_selection_head' }).append($('<p>').text("Game Mode")),
       $('<div>', { class: 'team_size_head sub_selection_head' }).append($('<p>').text("Team Size")));
 
-    let modalContent = $('.selection_modal_content').append(selectionHead);
-    const modalFooter = $('<div>', {
-      class: 'modal_footer'
-    });
+    const modalContent = $('.selection_modal_content').append(selectionHead);
 
     for (let i = 0; i < this.gameMode.length; i++) {
       let sectionClass = "selection_menu_" + i + " selection_section";
@@ -127,27 +137,155 @@ class GameBoard {
         class: sectionClass
       }).append(selectionBtnContainer.append(gameModeBtnContainer, teamSizeBtnContainer), hintContainer));
     }
-    this.boardElement.selectionModalArea.append(modalContent.append(modalFooter));
+    this.boardElement.selectionModalArea.append(modalContent.append(this.renderModalFooter()));
+    this.removeEvent($('.game_mode_button_container > button'));
     this.addEventHandlers($('.selection_modal .close'), this.closeSelectionModal);
     this.addEventHandlers($('.game_mode_button_container > button'), this.gameModeSelection);
     this.removeEvent(this.boardElement.menuButton);
   }
 
-  closeSelectionModal() {
-    $('.selection_modal').removeClass('pop_left').empty();
+  closeSelectionModal = () => {
+    this.boardElement.selectionModalArea.removeClass('pop_left').empty();
     this.removeEvent($('.selection_modal .close'));
     this.addEventHandlers(this.boardElement.menuButton, this.handleMenu);
   }
 
-  createTeamRosterMenu() {
-    $('.selection_modal').empty();
+  createTeamRosterMenu = () => {
+    this.boardElement.selectionModalArea.empty();
+    const returnIcon = $('<div>', {
+      class: 'modal_header'
+    }).append($('<img>', {
+      class: 'return button',
+      src: './media/images/icon/return.png'
+    }));
+    const selectionModalContent = $('<div>', {
+      class: 'selection_modal_content overflow'
+    }).append(returnIcon);
+    this.boardElement.selectionModalArea.append(selectionModalContent);
+
+    const selectedTeamArea = $('<div>', {
+      class: 'selected_team_container'
+    });
+    for (var i = 0; i < 6; i++) {
+      if (i < this.selectedTeamSize) {
+        selectedTeamArea.append($('<div>', {
+          class: 'selected_team_' + i + ' selected_team_slot',
+          selectedTeam: i
+        }).css('background-color', 'lightgray'))
+      } else {
+        selectedTeamArea.append($('<div>', {
+          class: 'selected_team_' + i + ' selected_team_slot',
+          selectedTeam: i
+        }))
+      }
+    }
+
+    const teamMainArea = $('<div>', {
+      class: 'team_main_container selection_button_container'
+    });
+    for (var j = 0; j < 18; j++) {
+      teamMainArea.append($('<div>', {
+        class: 'type_' + j + ' type_slot',
+        type: j
+      }).append($('<button>', {
+        class: 'type_button button type_button_' + j,
+        type: j
+      }).text(this.type[j])))
+    }
+
+    const confirmButtonArea = $('<div>', {
+      class: 'confirm_button_container selection_button_container'
+    }).append($('<button>', {
+      class: 'team_confirm_button button'
+    }).text("Game Start"));
+    selectionModalContent.append(selectedTeamArea, confirmButtonArea, teamMainArea, this.renderModalFooter());
+    this.removeEvent($('.return'));
+    this.addEventHandlers($('.return'), this.handleDifficultyReturn);
+    this.removeEvent($('.type_button'));
+    this.addEventHandlers($('.type_button'), this.createTypeSection);
+    //click on types will go to new function
+    //general css
+    //responsive design
   }
 
-  removeEvent(element) {
+  createDifficultyMenu = () => {
+    this.boardElement.selectionModalArea.empty();
+    const returnIcon = $('<div>', {
+      class: 'modal_header'
+    }).append($('<img>', {
+      class: 'return button',
+      src: './media/images/icon/return.png'
+    }));
+    const selectionModalContent = $('<div>', {
+      class: 'selection_modal_content'
+    }).append(returnIcon);
+    this.boardElement.selectionModalArea.append(selectionModalContent);
+
+    const difficultyHead = $('<div>', {
+      class: 'selection_head'
+    }).append($('<div>', { class: 'difficulty_head' }).append($('<p>').text("Difficulty")));
+    const modalContent = $('.selection_modal_content').append(difficultyHead);
+
+    for (let i = 0; i < this.difficulty.length; i++) {
+      let sectionClass = "selection_menu_" + i + " difficulty_section";
+      let difficultyClass = "difficulty_" + i + " button";
+
+      let selectionBtnContainer = $('<div>', {
+        class: 'selection_button_container'
+      }).append($('<button>', { class: difficultyClass, difficulty: i }).text(this.difficulty[i].toUpperCase()));
+
+      modalContent.append($('<div>', {
+        class: sectionClass
+      }).append(selectionBtnContainer));
+    }
+    this.boardElement.selectionModalArea.append(modalContent.append(this.renderModalFooter()));
+    this.removeEvent($('.difficulty_section button'));
+    this.addEventHandlers($('.difficulty_section button'), this.difficultySelection);
+    this.removeEvent($('.return'));
+    this.addEventHandlers($('.return'), this.handleGameModeReturn);
+  }
+
+  handleGameModeReturn = () => {
+    //try to modify this portion of code later
+    this.boardElement.selectionModalArea.empty();
+    const closeIcon = $('<div>', {
+      class: 'modal_header'
+    }).append($('<span>', {
+      class: 'close',
+    }).html('&times;'));
+    const selectionModal = $('<div>', {
+      class: 'selection_modal_content'
+    }).append(closeIcon);
+    this.boardElement.selectionModalArea.append(selectionModal);
+    this.createGameModeMenu();
+    if (this.selectedGameMode) {
+      for (var i = 0; i < this.gameMode.length; i++) {
+        if (this.gameMode[i] === this.selectedGameMode) {
+          $('.game_mode_button_container > .game_mode_' + i).addClass('choice');
+          $('.team_size_button_container > .game_mode_' + i).removeClass('hide');
+        }
+      }
+    }
+    this.removeEvent($('.team_size_button_container > button'));
+    this.addEventHandlers($('.team_size_button_container > button'), this.teamSizeSelection);
+  }
+
+  handleDifficultyReturn = () => {
+    this.boardElement.selectionModalArea.empty();
+    this.createDifficultyMenu();
+  }
+
+  renderModalFooter = () => {
+    return $('<div>', {
+      class: 'modal_footer'
+    });
+  }
+
+  removeEvent = element => {
     element.off();
   }
 
-  gameModeSelection() {
+  gameModeSelection = () => {
     const gameModeNumber = $(event.currentTarget).attr('game_mode');
     this.selectedGameMode = this.gameMode[gameModeNumber];
     $('.game_mode_button_container > button').removeClass('choice');
@@ -158,11 +296,72 @@ class GameBoard {
     this.addEventHandlers($('.team_size_button_container > button'), this.teamSizeSelection);
   }
 
-  teamSizeSelection() {
+  teamSizeSelection = () => {
     const teamSizeNumber = $(event.currentTarget).text();
     this.selectedTeamSize = parseInt(teamSizeNumber);
     $('.team_size_button_container > button').removeClass('choice');
     $(event.currentTarget).addClass('choice');
+    this.createDifficultyMenu();
+  }
+
+  difficultySelection = () => {
+    const difficultyNumber = $(event.currentTarget).attr('difficulty');
+    this.selectedDifficulty = this.difficulty[difficultyNumber];
     this.createTeamRosterMenu();
+  }
+
+  createTypeSection = () => {
+    this.selectedType = $(event.currentTarget).attr('type');
+    if (this.data[this.type[this.selectedType]].length === 0) {
+      this.requestPokemon(this.selectedType);
+    }
+    //console.log(this.data[this.type[selectedTypeNumber]]);
+    $('.team_main_container').empty();
+    //this.pokemonContainerRender(selectedTypeNumber);
+  }
+
+  pokemonContainerRender = typeIndex => {
+    const container = $('.team_main_container');
+    for (let i = 0; i < this.data[this.type[typeIndex]].length; i++) {
+      const newMonsterContainer = $('<div>').text(this.data[this.type[typeIndex]][i].pokemon.name);
+      container.append(newMonsterContainer);
+    }
+    console.log(this.data[this.type[typeIndex]]);
+  }
+
+  requestPokemon = (typeIndex,callback) => {
+    const typeUrl = "https://pokeapi.co/api/v2/type/" + (parseInt(typeIndex) + 1);
+    const ajaxConfigObject = {
+      dataType: "json",
+      url: typeUrl,
+      method: "GET",
+      success: this.processGetPokemonData,
+      error: this.processGetPokemonError
+    };
+    // return new Promise((resolve, reject) => {
+    $.ajax(ajaxConfigObject);
+    // });
+  }
+
+  processGetPokemonData = response => {
+    // console.log("processGetPokemonData: ", response);
+    for (let i = 0; i < response.pokemon.length; i++) {
+      this.data[response.name].push(response.pokemon[i]);
+    }
+    this.pokemonContainerRender(this.selectedType);
+
+    //get type pokemon length
+    //create length amount of divs
+    //get pokemon sprites and insert into divs
+    //name array or key, sprite array or value
+    //css
+    //add event handlers
+    //adjust return icon
+    //adjust team main area for draft
+  }
+
+  processGetPokemonError = error => {
+    console.log(error);
+    // alert("Error: cannot retrieve type information.");
   }
 }
