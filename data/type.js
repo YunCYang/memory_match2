@@ -1,4 +1,4 @@
-const pokemonStat = [
+const pokemonType = [
 1, 12,
 1, 4,
 2, 12,

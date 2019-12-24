@@ -27,18 +27,6 @@ class GameBoard {
     this.selectedTeamSize = null;
     this.selectedType = null;
     this.selectedDifficulty = null;
-
-    // this.handleMenu = this.handleMenu.bind(this);
-    // this.handleSettings = this.handleSettings.bind(this);
-    // this.closeSelectionModal = this.closeSelectionModal.bind(this);
-    // this.handleGameModeReturn = this.handleGameModeReturn.bind(this);
-    // this.handleDifficultyReturn = this.handleDifficultyReturn.bind(this);
-    // this.gameModeSelection = this.gameModeSelection.bind(this);
-    // this.teamSizeSelection = this.teamSizeSelection.bind(this);
-    // this.difficultySelection = this.difficultySelection.bind(this);
-    // this.createTypeSection = this.createTypeSection.bind(this);
-    // this.requestPokemon = this.requestPokemon.bind(this);
-    // this.processGetPokemonData = this.processGetPokemonData.bind(this);
   }
 
   addEventHandlers = (element, elementEvent) => {
@@ -312,21 +300,52 @@ class GameBoard {
 
   createTypeSection = () => {
     this.selectedType = $(event.currentTarget).attr('type');
+    console.log(this.data);
     if (this.data[this.type[this.selectedType]].length === 0) {
+      console.log(this.data);
       this.requestPokemon(this.selectedType);
+      $('.team_main_container').empty();
+    } else {
+      //console.log(this.selectedType);
+      $('.team_main_container').empty();
+      this.pokemonContainerRender(this.selectedType);
     }
     //console.log(this.data[this.type[selectedTypeNumber]]);
-    $('.team_main_container').empty();
     //this.pokemonContainerRender(selectedTypeNumber);
   }
 
   pokemonContainerRender = typeIndex => {
     const container = $('.team_main_container');
     for (let i = 0; i < this.data[this.type[typeIndex]].length; i++) {
-      const newMonsterContainer = $('<div>').text(this.data[this.type[typeIndex]][i].pokemon.name);
-      container.append(newMonsterContainer);
-    }
-    console.log(this.data[this.type[typeIndex]]);
+      //if (this.ifPokemonOnList(this.getPokemonId(this.data[this.type[typeIndex]][i].pokemon.name))) {
+      if (this.getPokemonId(this.data[this.type[typeIndex]][i].pokemon.name)) {
+        const newMonsterContainer = $('<div>', {
+          class: 'monster_container',
+          name: this.data[this.type[typeIndex]][i].pokemon.name
+        }).append($('<div>', {
+          class: 'monster_container_top'
+        }).append($('<div>', {
+          class: 'monster_icon_container'
+        }).append($('<img>', {
+          class: 'monster_icon',
+          src: this.getPokemonSprite(this.getPokemonId(this.data[this.type[typeIndex]][i].pokemon.name)),
+          alt: 'pokemon icon',
+          name: this.data[this.type[typeIndex]][i].pokemon.name
+        })), $('<div>', {
+          class: 'plus_button_container'
+        }), $('<div>', {
+          class: 'info_button_container'
+        }), $('<div>', {
+          class: 'type_container'
+        }), $('<div>', {
+          class: 'type_container'
+        })), $('<div>', {
+          class: 'monster_container_bot'
+        }).append($('<span>').text(this.data[this.type[typeIndex]][i].pokemon.name)));
+        container.append(newMonsterContainer);
+      }
+      }
+    //console.log(this.data[this.type[typeIndex]]);
   }
 
   requestPokemon = (typeIndex,callback) => {
@@ -338,9 +357,7 @@ class GameBoard {
       success: this.processGetPokemonData,
       error: this.processGetPokemonError
     };
-    // return new Promise((resolve, reject) => {
     $.ajax(ajaxConfigObject);
-    // });
   }
 
   processGetPokemonData = response => {
@@ -364,4 +381,70 @@ class GameBoard {
     console.log(error);
     // alert("Error: cannot retrieve type information.");
   }
+
+  ifPokemonOnList = (id) => {
+    return Object.keys(pokemonName).includes(id.toString());
+  }
+  getPokemonName = (id) => {
+    return pokemonName[id];
+  }
+  getPokemonId = (name) => {
+    //console.log(name);
+    return Object.keys(pokemonName)[Object.values(pokemonName).indexOf(name)];
+  }
+  getPokemonSprite = (id) => {
+    return `https://raw.githubusercontent.com/PokeAPI/pokeapi/master/data/v2/sprites/pokemon/${id}.png`;
+  }
+  getPokemonType = (id) => {
+    const tempIdIndexStorage = [];
+    const tempTypeStorage = [0, 0];
+    if (id <= 18) {
+      for (let i = 0; i < 56; i++) {
+        if (id === pokemonType[i] && i % 2 === 0) {
+          tempIdIndexStorage.push(i);
+        }
+      }
+      if (!tempIdIndexStorage[1]) {
+        tempIdIndexStorage.push(0);
+      }
+    } else {
+      tempIdIndexStorage.push(pokemonType.indexOf(id));
+      if (pokemonType[pokemonType.indexOf(id)+2] === id) {
+        tempIdIndexStorage.push(pokemonType[pokemonType.indexOf(id) + 2]);
+      } else {
+        tempIdIndexStorage.push(0);
+      }
+    }
+    if (tempIdIndexStorage[1] === 0) {
+      tempTypeStorage[1] = 0;
+    } else {
+      tempTypeStorage[1] = pokemonType[tempIdIndexStorage[1] + 1];
+    }
+    tempTypeStorage[0] = pokemonType[tempIdIndexStorage[0] + 1];
+    return tempTypeStorage;
+  }
+
+  getPokemonStat = (id) => {
+    const selectedStat = {
+      hp: null,
+      attack: null,
+      defense: null,
+      sp_attack: null,
+      sp_defense: null,
+      speed: null
+    };
+    for (let i = 0; i < pokemonStat.length; i++) {
+      if (pokemonStat[i] === id && i % 18 === 0) {
+        selectedStat.hp = pokemonStat[i+2];
+        selectedStat.attack = pokemonStat[i+5];
+        selectedStat.defense = pokemonStat[i+8];
+        selectedStat.sp_attack = pokemonStat[i+11];
+        selectedStat.sp_defense = pokemonStat[i+14];
+        selectedStat.speed = pokemonStat[i+17];
+      }
+    }
+    return selectedStat;
+  }
 }
+
+// cache bug
